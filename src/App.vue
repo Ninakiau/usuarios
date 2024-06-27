@@ -1,16 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<AddUser/>
+<ReadUsers/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddUser from './components/AddUser.vue';
+import ReadUsers from './components/ReadUsers.vue';
+import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc } from
+    'firebase/firestore';
+import firebaseApp from './firebaseconfig.js';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    AddUser,
+    ReadUsers
+  },
+  data() {
+        return {
+            usuarios: [],
+            name: '',
+            email: '',
+            phone: '',
+        };
+    },
+    mounted() {
+        const db = getFirestore(firebaseApp);
+        const usuariosRef = collection(db, 'usuarios')
+
+        onSnapshot(usuariosRef, (snapshot) => {
+            this.usuarios = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+
+
+            }));
+        })
+    },
+
+  
 }
 </script>
 
