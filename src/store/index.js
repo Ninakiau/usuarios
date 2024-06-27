@@ -51,7 +51,7 @@ export default createStore({
     async deleteUser({ commit }, id) {
       const db = getFirestore(firebaseApp);
       const usuariosRef = collection(db, "usuarios");
-      const usuarioDoc = doc(db, úsuarios, id);
+      const usuarioDoc = doc(db, "usuarios", id);
       await deleteDoc(usuarioDoc);
       commit("DELETE_USER", id);
     },

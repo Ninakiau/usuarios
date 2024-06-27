@@ -10,35 +10,18 @@
     </div>
 </template>
 <script>
-import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc } from
-    'firebase/firestore';
-import firebaseApp from '../firebaseconfig.js';
+import { mapState, mapActions } from 'vuex'
 export default {
-    data() {
-        return {
-            usuarios: []
-        }
+    computed: {
+        ...mapState(['usuarios'])
     },
-    mounted() {
-        const db = getFirestore(firebaseApp);
-        const usuariosRef = collection(db, 'usuarios')
 
-        onSnapshot(usuariosRef, (snapshot) => {
-            this.usuarios = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-
-
-            }));
-        })
-    },
     methods: {
-        async deleteUser(id){
-            const db = getFirestore(firebaseApp);
-            const usuariosRef=doc(db, 'usuarios', id)
-            await deleteDoc(usuariosRef);
-
-}
+        ...mapActions(['deleteUser']),
     },
+
+    mounted() {
+        this.$store.dispatch('getUsers')
+    }
 }
 </script>
