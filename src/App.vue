@@ -4,11 +4,10 @@
 </template>
 
 <script>
+// Importamos los componentes
 import AddUser from './components/AddUser.vue';
 import ReadUsers from './components/ReadUsers.vue';
-import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc } from
-    'firebase/firestore';
-import firebaseApp from './firebaseconfig.js';
+
 
 export default {
   name: 'App',
@@ -16,29 +15,6 @@ export default {
     AddUser,
     ReadUsers
   },
-  data() {
-        return {
-            usuarios: [],
-            name: '',
-            email: '',
-            phone: '',
-        };
-    },
-    mounted() {
-        const db = getFirestore(firebaseApp);
-        const usuariosRef = collection(db, 'usuarios')
-
-        onSnapshot(usuariosRef, (snapshot) => {
-            this.usuarios = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-
-
-            }));
-        })
-    },
-
-  
 }
 </script>
 
